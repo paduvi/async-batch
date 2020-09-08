@@ -85,6 +85,9 @@ public class BatchProcessor<K, V> implements Closeable {
 
         public BatchProcessor<K, V> build(Consumer<List<Map.Entry<K, AsyncCallback<V>>>> applyFn) {
             assert applyFn != null;
+            assert batchSize > 0;
+            assert corePoolSize > 0;
+
             return new BatchProcessor<>(this, applyFn);
         }
 
