@@ -61,7 +61,9 @@ public class BatchProcessor<K, V> implements Closeable {
         AsyncCallback<V> callback = new AsyncCallback<>();
         this.queue.offer(new AbstractMap.SimpleImmutableEntry<>(payload, callback));
 
-        this.semaphore.release(this.corePoolSize);
+        if (this.semaphore.availablePermits() == 0) {
+            this.semaphore.release(this.corePoolSize);
+        }
         return callback;
     }
 
